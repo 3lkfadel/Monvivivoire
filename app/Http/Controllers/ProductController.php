@@ -14,7 +14,7 @@ class ProductController extends Controller
         // Récupérer les catégories pour le filtre
         $categories = Category::all();
 
-        // Récupérer les produits en fonction des filtres
+        // Initialiser la requête pour les produits
         $products = Product::query();
 
         // Filtrer par catégorie
@@ -22,12 +22,12 @@ class ProductController extends Controller
             $products->where('category_id', $request->category);
         }
 
-        // Filtrer par prix (par exemple, prix croissant ou décroissant)
+        // Filtrer par prix (croissant ou décroissant)
         if ($request->filled('price')) {
             $products->orderBy('price', $request->price);
         }
 
-        // Filtrer par localisation (optionnel, selon la structure des produits)
+        // Filtrer par localisation
         if ($request->filled('location')) {
             $products->where('location', 'like', '%' . $request->location . '%');
         }
@@ -45,6 +45,7 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'categories'));
     }
 
+
     public function create()
     {
         $categories = Category::all();
@@ -57,24 +58,29 @@ class ProductController extends Controller
             'description' => 'nullable|string|max:1000',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Règle pour l'image
         ]);
 
-        // Obtenir la localisation de l'utilisateur connecté
-        $user = Auth::user(); // Utilisation correcte d'Auth
-        $location = $user->location; // Accès à la localisation de l'utilisateur
 
-        // Créer le produit en incluant la localisation
+        $user = Auth::user();
+        $location = $user->location;
+
+        // Gérer l'image
+        $imagePath = $request->file('image')->store('products', 'public');
+
         Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'category_id' => $request->category_id,
             'user_id' => $user->id,
-            'location' => $location,  // Ajout de la localisation
+            'location' => $location,
+            'image' => $imagePath, // Stocker le chemin de l'image
         ]);
 
         return redirect()->route('products.index')->with('success', 'Produit créé avec succès');
     }
+
 
     public function show($id)
 {

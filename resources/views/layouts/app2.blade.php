@@ -13,7 +13,7 @@
     <!-- Barre de navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">MonVivivoire</a>
+            <a class="navbar-brand" href="{{ url('/products') }}">MonVivivoire</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,6 +31,12 @@
                         <!-- Liens pour les utilisateurs connectés -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('products.index') }}">Produits</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.create') }}">Nouveau produit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('categories.create') }}">New Category</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

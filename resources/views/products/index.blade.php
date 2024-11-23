@@ -39,15 +39,21 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Filtrer</button>
+            <button type="submit" class="btn btn-primary mt-3">Filtrer</button>
         </form>
 
         <!-- Liste des produits -->
         <div class="row">
-            @foreach ($products as $product)
+            @forelse ($products as $product)
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                        <!-- Afficher l'image du produit ou une image par défaut -->
+                        <img
+                            src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                            class="card-img-top"
+                            alt="{{ $product->name }}"
+                            style="height: 200px; object-fit: cover;">
+
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ Str::limit($product->description, 100) }}</p>
@@ -57,10 +63,16 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-12">
+                    <p class="text-center">Aucun produit trouvé.</p>
+                </div>
+            @endforelse
         </div>
 
         <!-- Pagination -->
-        {{ $products->links() }}
+        <div class="d-flex justify-content-center mt-4">
+            {{ $products->links() }}
+        </div>
     </div>
 @endsection

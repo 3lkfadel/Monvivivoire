@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('products.store') }}">
+    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group mb-3">
@@ -40,6 +40,11 @@
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image du produit</label>
+            <input type="file" name="image" id="image" class="form-control">
         </div>
 
         <button type="submit" class="btn btn-success">Créer</button>

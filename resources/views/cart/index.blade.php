@@ -1,9 +1,11 @@
-// resources/views/cart/index.blade.php
+@extends('layouts.app2')
+
+@section('content')
 
 <h1>Votre Panier</h1>
 
 @if ($cart && $cart->items->count() > 0)
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Produit</th>
@@ -21,7 +23,7 @@
                     <td>{{ $item->quantity }}</td>
                     <td>{{ $item->quantity * $item->product->price }} FCFA</td>
                     <td>
-                        <a href="{{ route('cart.remove', $item->product->id) }}">Supprimer</a>
+                        <a href="{{ route('cart.remove', $item->product->id) }}" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
             @endforeach
@@ -31,3 +33,5 @@
 @else
     <p>Votre panier est vide.</p>
 @endif
+
+@endsection
