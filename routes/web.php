@@ -6,6 +6,11 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
+use Illuminate\Http\Request;
+use GuzzleHttp\Client;
+Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,3 +52,26 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 
 Route::get('products/location/{location}', [ProductController::class, 'getProductsByLocation']);
+
+
+
+
+Route::post('/chat', function (Request $request) {
+    $client = new Client();
+
+    // Envoie une requête à l'API OpenAI
+    $response = $client->post('https://api.openai.com/v1/completions', [
+        'headers' => [
+            'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+        ],
+        'json' => [
+            'model' => 'text-davinci-003',
+            'prompt' => "Réponds comme un assistant intelligent à : " . $request->input('message'),
+            'max_tokens' => 150,
+            'temperature' => 0.7,
+        ],
+    ]);
+
+    // Retourne la réponse sous forme JSON
+    return response()->json(json_decode($response->getBody(), true));
+});

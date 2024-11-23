@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    
     public function createConversation($userId)
     {
         $user = Auth::user();
@@ -39,4 +40,9 @@ class ChatController extends Controller
 
         return redirect()->route('chat.show', $conversationId);
     }
+    public function showChat()
+{
+    return view('chat.index'); // vue pour afficher le chat
+}
+
 }
